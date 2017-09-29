@@ -1,0 +1,7 @@
+bin
+.metadata
+tmp
+cache
+/.settings
+/e2f4.jaspar
+/target/
