@@ -45,7 +45,7 @@ import org.jebtk.core.Resources;
 import org.jebtk.core.collections.CollectionUtils;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.io.Temp;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.modern.UIService;
 import org.jebtk.modern.dialog.ModernMessageDialog;
 import org.jebtk.modern.event.ModernClickEvent;
@@ -197,7 +197,7 @@ public class PathwayModule extends CalcModule implements ModernClickListener  {
 					new IdToSymbol(Resources.getGzipReader(HUMAN_ENSEMBL_FILE));
 		}
 
-		AnnotationMatrix m = mWindow.getCurrentMatrix();
+		DataFrame m = mWindow.getCurrentMatrix();
 
 		List<String> ids = m.columnAsText(c);
 		
