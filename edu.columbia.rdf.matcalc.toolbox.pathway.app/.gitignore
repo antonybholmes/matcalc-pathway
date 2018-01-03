@@ -2,6 +2,7 @@ bin
 .metadata
 tmp
 cache
-/.settings
-/e2f4.jaspar
+.settings/
+.classpath
 /target/
+/*log*
