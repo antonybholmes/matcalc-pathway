@@ -27,8 +27,6 @@
  */
 package edu.columbia.rdf.matcalc.toolbox.pathway.app;
 
-
-
 import java.awt.FontFormatException;
 import java.io.IOException;
 
@@ -45,21 +43,20 @@ import org.xml.sax.SAXException;
 import edu.columbia.rdf.matcalc.bio.BioModuleLoader;
 import edu.columbia.rdf.matcalc.toolbox.pathway.PathwayModule;
 
-
-
-
 /**
  * The class MainPathway.
  */
 public class MainPathway {
-	
-	public static final void main(String[] args) throws FontFormatException, IOException, SAXException, ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		AppService.getInstance().setAppInfo("pathway");
-		
-		ThemeService.getInstance().setTheme();
-		
-		ModuleLoader ml = new BioModuleLoader().addModule(PathwayModule.class);
-		
-		MainMatCalc.main(new PathwayInfo(), ml);
-	}
+
+  public static final void main(String[] args)
+      throws FontFormatException, IOException, SAXException, ParserConfigurationException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    AppService.getInstance().setAppInfo("pathway");
+
+    ThemeService.getInstance().setTheme();
+
+    ModuleLoader ml = new BioModuleLoader().addModule(PathwayModule.class);
+
+    MainMatCalc.main(new PathwayInfo(), ml);
+  }
 }

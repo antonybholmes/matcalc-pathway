@@ -57,149 +57,152 @@ import org.jebtk.modern.text.ModernTextArea;
 import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 
-
 /**
  * The class GenesPanel.
  */
 public class GenesPanel extends ModernWidget implements ModernClickListener {
-	
-	/**
-	 * The constant serialVersionUID.
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * The m genes field.
-	 */
-	private ModernTextArea mGenesField = new ModernTextArea();
-	
-	/**
-	 * The collection map.
-	 */
-	private Map<ModernCheckBox, GeneSetCollection> collectionMap =
-			new HashMap<ModernCheckBox, GeneSetCollection>();
 
-	/**
-	 * The m model.
-	 */
-	private Set<GeneSetCollection> mModel;
-	
-	/**
-	 * Instantiates a new genes panel.
-	 *
-	 * @param parent the parent
-	 * @param model the model
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public GenesPanel(ModernWindow parent,
-			Set<GeneSetCollection> model) throws IOException {
-		mModel = model;
-				
-		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		
-		Box box = Box.createVerticalBox();
-		box.setAlignmentY(TOP_ALIGNMENT);
-		
-		//box.add(new ModernDialogHeadingLabel("Gene Symbols"));
-		//box.add(ModernTheme.createVerticalGap());
-		
-		ModernScrollPane scrollPane = new ModernScrollPane(mGenesField);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollBarPolicy.NEVER);
-		//Ui.setSize(scrollPane, new Dimension(150, 400));
-		box.add(new ModernDialogContentPanel(scrollPane));
-		box.setMinimumSize(new Dimension(150, 0));
-		
-		add(box);
-		
-		add(ModernWidget.createHGap());
-		
-		box = Box.createVerticalBox();
-		box.setAlignmentY(TOP_ALIGNMENT);
-		
-		box.add(new ModernDialogHeadingLabel("Gene Sets"));
-		box.add(ModernWidget.createVGap());
-		
-		
-		
-		for (GeneSetCollection collection : model) {
-			ModernCheckBox collCheck = new ModernCheckBox(collection.getName());
-			collCheck.addClickListener(this);
-			UI.setSize(collCheck, new Dimension(200, 24));
-			
-			box.add(collCheck);
-			box.add(ModernWidget.createVGap());
-			
-			collectionMap.put(collCheck, collection);
-		}
-		
-		add(box);
-	}
-	
-	/**
-	 * Open file.
-	 *
-	 * @param file the file
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public void openFile(File file) throws IOException {
-		if (file == null) {
-			return;
-		}
-		
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		
-		String line;
-		
-		try {
-			while ((line = reader.readLine()) != null) {
-				if (Io.isEmptyLine(line)) {
-					continue;
-				}
-				
-				if (mGenesField.getText().length() > 0) {
-					mGenesField.append(TextUtils.NEW_LINE);
-				}
-				
-				mGenesField.append(line);
-			}
-		} finally {
-			reader.close();
-		}
-	}
-	
-	/**
-	 * Sets the collections.
-	 */
-	private void setCollections() {
-		List<GeneSetCollection> collections = 
-				new ArrayList<GeneSetCollection>();
-		
-		for (ModernCheckBox check : collectionMap.keySet()) {
-			if (check.isSelected()) {
-				collections.add(collectionMap.get(check));
-			}
-		}
-		
-		Collections.sort(collections);
-		
-		mModel.addAll(collections);
-	}
-	
-	/**
-	 * Gets the symbols.
-	 *
-	 * @return the symbols
-	 */
-	public List<String> getSymbols() {
-		return TextUtils.newLineSplit(mGenesField.getText());
-	}
+  /**
+   * The constant serialVersionUID.
+   */
+  private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
-	 * @see org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern.event.ModernClickEvent)
-	 */
-	@Override
-	public void clicked(ModernClickEvent e) {
-		setCollections();
-	}
-	
+  /**
+   * The m genes field.
+   */
+  private ModernTextArea mGenesField = new ModernTextArea();
+
+  /**
+   * The collection map.
+   */
+  private Map<ModernCheckBox, GeneSetCollection> collectionMap = new HashMap<ModernCheckBox, GeneSetCollection>();
+
+  /**
+   * The m model.
+   */
+  private Set<GeneSetCollection> mModel;
+
+  /**
+   * Instantiates a new genes panel.
+   *
+   * @param parent
+   *          the parent
+   * @param model
+   *          the model
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
+   */
+  public GenesPanel(ModernWindow parent, Set<GeneSetCollection> model) throws IOException {
+    mModel = model;
+
+    setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+    Box box = Box.createVerticalBox();
+    box.setAlignmentY(TOP_ALIGNMENT);
+
+    // box.add(new ModernDialogHeadingLabel("Gene Symbols"));
+    // box.add(ModernTheme.createVerticalGap());
+
+    ModernScrollPane scrollPane = new ModernScrollPane(mGenesField);
+    scrollPane.setHorizontalScrollBarPolicy(ScrollBarPolicy.NEVER);
+    // Ui.setSize(scrollPane, new Dimension(150, 400));
+    box.add(new ModernDialogContentPanel(scrollPane));
+    box.setMinimumSize(new Dimension(150, 0));
+
+    add(box);
+
+    add(ModernWidget.createHGap());
+
+    box = Box.createVerticalBox();
+    box.setAlignmentY(TOP_ALIGNMENT);
+
+    box.add(new ModernDialogHeadingLabel("Gene Sets"));
+    box.add(ModernWidget.createVGap());
+
+    for (GeneSetCollection collection : model) {
+      ModernCheckBox collCheck = new ModernCheckBox(collection.getName());
+      collCheck.addClickListener(this);
+      UI.setSize(collCheck, new Dimension(200, 24));
+
+      box.add(collCheck);
+      box.add(ModernWidget.createVGap());
+
+      collectionMap.put(collCheck, collection);
+    }
+
+    add(box);
+  }
+
+  /**
+   * Open file.
+   *
+   * @param file
+   *          the file
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
+   */
+  public void openFile(File file) throws IOException {
+    if (file == null) {
+      return;
+    }
+
+    BufferedReader reader = new BufferedReader(new FileReader(file));
+
+    String line;
+
+    try {
+      while ((line = reader.readLine()) != null) {
+        if (Io.isEmptyLine(line)) {
+          continue;
+        }
+
+        if (mGenesField.getText().length() > 0) {
+          mGenesField.append(TextUtils.NEW_LINE);
+        }
+
+        mGenesField.append(line);
+      }
+    } finally {
+      reader.close();
+    }
+  }
+
+  /**
+   * Sets the collections.
+   */
+  private void setCollections() {
+    List<GeneSetCollection> collections = new ArrayList<GeneSetCollection>();
+
+    for (ModernCheckBox check : collectionMap.keySet()) {
+      if (check.isSelected()) {
+        collections.add(collectionMap.get(check));
+      }
+    }
+
+    Collections.sort(collections);
+
+    mModel.addAll(collections);
+  }
+
+  /**
+   * Gets the symbols.
+   *
+   * @return the symbols
+   */
+  public List<String> getSymbols() {
+    return TextUtils.newLineSplit(mGenesField.getText());
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern
+   * .event.ModernClickEvent)
+   */
+  @Override
+  public void clicked(ModernClickEvent e) {
+    setCollections();
+  }
+
 }

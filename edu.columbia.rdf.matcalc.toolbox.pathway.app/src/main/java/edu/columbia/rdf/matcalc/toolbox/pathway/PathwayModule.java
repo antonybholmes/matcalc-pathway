@@ -57,172 +57,168 @@ import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.toolbox.CalcModule;
 import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
 
-
 /**
- * Merges designated segments together using the merge column. Consecutive rows with the same
- * merge id will be merged together. Coordinates and copy number will be adjusted but
- * genes, cytobands etc are not.
+ * Merges designated segments together using the merge column. Consecutive rows
+ * with the same merge id will be merged together. Coordinates and copy number
+ * will be adjusted but genes, cytobands etc are not.
  *
  * @author Antony Holmes Holmes
  *
  */
-public class PathwayModule extends CalcModule implements ModernClickListener  {
+public class PathwayModule extends CalcModule implements ModernClickListener {
 
-	/**
-	 * The constant HUMAN_REFSEQ_Path.
-	 */
-	private static final Path HUMAN_REFSEQ_FILE = 
-			PathUtils.getPath("res/modules/pathway/ucsc_refseq_genes_hg19_20160331.txt.gz");
+  /**
+   * The constant HUMAN_REFSEQ_Path.
+   */
+  private static final Path HUMAN_REFSEQ_FILE = PathUtils
+      .getPath("res/modules/pathway/ucsc_refseq_genes_hg19_20160331.txt.gz");
 
-	private static final Path HUMAN_ENSEMBL_FILE = 
-			PathUtils.getPath("res/modules/pathway/ucsc_ensembl_genes_hg19_20160711.txt.gz");
+  private static final Path HUMAN_ENSEMBL_FILE = PathUtils
+      .getPath("res/modules/pathway/ucsc_ensembl_genes_hg19_20160711.txt.gz");
 
-	/**
-	 * The member convert button.
-	 */
-	private RibbonLargeButton mConvertButton = new RibbonLargeButton("Pathway", 
-			UIService.getInstance().loadIcon(PathwayIcon.class, 24));
+  /**
+   * The member convert button.
+   */
+  private RibbonLargeButton mConvertButton = new RibbonLargeButton("Pathway",
+      UIService.getInstance().loadIcon(PathwayIcon.class, 24));
 
-	public static final Path GENE_SETS_FOLDER =
-			PathUtils.getPath("res/modules/pathway/gene_sets");
+  public static final Path GENE_SETS_FOLDER = PathUtils.getPath("res/modules/pathway/gene_sets");
 
-	/**
-	 * The member window.
-	 */
-	private MainMatCalcWindow mWindow;
+  /**
+   * The member window.
+   */
+  private MainMatCalcWindow mWindow;
 
-	private IdToSymbol mHumanRefSeqConversion;
+  private IdToSymbol mHumanRefSeqConversion;
 
-	private IdToSymbol mHumanEnsemblConversion;
+  private IdToSymbol mHumanEnsemblConversion;
 
-	
-	/* (non-Javadoc)
-	 * @see org.abh.lib.NameProperty#getName()
-	 */
-	@Override
-	public String getName() {
-		return "Pathway";
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.abh.lib.NameProperty#getName()
+   */
+  @Override
+  public String getName() {
+    return "Pathway";
+  }
 
-	/* (non-Javadoc)
-	 * @see edu.columbia.rdf.apps.matcalc.modules.Module#init(edu.columbia.rdf.apps.matcalc.MainMatCalcWindow)
-	 */
-	@Override
-	public void init(MainMatCalcWindow window) {
-		mWindow = window;
-		
-		// home
-		mWindow.getRibbon().getHomeToolbar().getSection("Tools").add(mConvertButton);
+  /*
+   * (non-Javadoc)
+   * 
+   * @see edu.columbia.rdf.apps.matcalc.modules.Module#init(edu.columbia.rdf.apps.
+   * matcalc.MainMatCalcWindow)
+   */
+  @Override
+  public void init(MainMatCalcWindow window) {
+    mWindow = window;
 
-		mConvertButton.addClickListener(this);
-	}
+    // home
+    mWindow.getRibbon().getHomeToolbar().getSection("Tools").add(mConvertButton);
 
-	
+    mConvertButton.addClickListener(this);
+  }
 
-	/* (non-Javadoc)
-	 * @see org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern.event.ModernClickEvent)
-	 */
-	@Override
-	public final void clicked(ModernClickEvent e) {
-		try {
-			analysis();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		} catch (InvalidFormatException e1) {
-			e1.printStackTrace();
-		} catch (SAXException e1) {
-			e1.printStackTrace();
-		} catch (ParserConfigurationException e1) {
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (FontFormatException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
-			e1.printStackTrace();
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern
+   * .event.ModernClickEvent)
+   */
+  @Override
+  public final void clicked(ModernClickEvent e) {
+    try {
+      analysis();
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    } catch (ParseException e1) {
+      e1.printStackTrace();
+    } catch (InvalidFormatException e1) {
+      e1.printStackTrace();
+    } catch (SAXException e1) {
+      e1.printStackTrace();
+    } catch (ParserConfigurationException e1) {
+      e1.printStackTrace();
+    } catch (ClassNotFoundException e1) {
+      e1.printStackTrace();
+    } catch (InstantiationException e1) {
+      e1.printStackTrace();
+    } catch (IllegalAccessException e1) {
+      e1.printStackTrace();
+    } catch (FontFormatException e1) {
+      e1.printStackTrace();
+    } catch (UnsupportedLookAndFeelException e1) {
+      e1.printStackTrace();
+    }
+  }
 
-	/**
-	 * Analysis.
-	 * 
-	 * @throws IOException 
-	 * @throws ParseException 
-	 * @throws ParserConfigurationException 
-	 * @throws SAXException 
-	 * @throws InvalidFormatException 
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws FontFormatException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
-	 * @throws Exception 
-	 */
-	private void analysis() throws IOException, ParseException, InvalidFormatException, SAXException, ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, FontFormatException, UnsupportedLookAndFeelException {
-		List<Integer> columns = mWindow.getSelectedColumns();
+  /**
+   * Analysis.
+   * 
+   * @throws IOException
+   * @throws ParseException
+   * @throws ParserConfigurationException
+   * @throws SAXException
+   * @throws InvalidFormatException
+   * @throws UnsupportedLookAndFeelException
+   * @throws FontFormatException
+   * @throws IllegalAccessException
+   * @throws InstantiationException
+   * @throws ClassNotFoundException
+   * @throws Exception
+   */
+  private void analysis() throws IOException, ParseException, InvalidFormatException, SAXException,
+      ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException,
+      FontFormatException, UnsupportedLookAndFeelException {
+    List<Integer> columns = mWindow.getSelectedColumns();
 
+    if (columns.size() == 0) {
+      ModernMessageDialog.createWarningDialog(mWindow, "You must select a column of gene ids/symbols.");
 
-		if (columns.size() == 0) {
-			ModernMessageDialog.createWarningDialog(mWindow, 
-					"You must select a column of gene ids/symbols.");
+      return;
+    }
 
-			return;
-		}
-		
-		int c = columns.get(0);
-		
-		PathwayDialog dialog = new PathwayDialog(mWindow);
-		
-		dialog.setVisible(true);
-		
-		if (dialog.isCancelled()) {
-			return;
-		}
+    int c = columns.get(0);
 
-		// Load the gene mapping if necessary
+    PathwayDialog dialog = new PathwayDialog(mWindow);
 
-		if (mHumanRefSeqConversion == null) {
-			mHumanRefSeqConversion = 
-					new IdToSymbol(Resources.getGzipReader(HUMAN_REFSEQ_FILE));
-		}
-		
-		if (mHumanEnsemblConversion == null) {
-			mHumanEnsemblConversion = 
-					new IdToSymbol(Resources.getGzipReader(HUMAN_ENSEMBL_FILE));
-		}
+    dialog.setVisible(true);
 
-		DataFrame m = mWindow.getCurrentMatrix();
+    if (dialog.isCancelled()) {
+      return;
+    }
 
-		List<String> ids = m.columnAsText(c);
-		
-		// Make ids unique
-		ids = CollectionUtils.uniquePreserveOrder(ids);
+    // Load the gene mapping if necessary
 
-		Path mTempPath = Temp.generateTempFile("txt");
-		Path mTablePath = Temp.generateTempFile("txt");
+    if (mHumanRefSeqConversion == null) {
+      mHumanRefSeqConversion = new IdToSymbol(Resources.getGzipReader(HUMAN_REFSEQ_FILE));
+    }
 
-		Set<GeneSet> collections = dialog.getCollections();
-		
-		double maxFdr = dialog.getFdr();
+    if (mHumanEnsemblConversion == null) {
+      mHumanEnsemblConversion = new IdToSymbol(Resources.getGzipReader(HUMAN_ENSEMBL_FILE));
+    }
 
-		Pathway.analysis(ids,
-				collections,
-				mHumanRefSeqConversion,
-				mHumanEnsemblConversion,
-				maxFdr,
-				mTempPath,
-				mTablePath);
+    DataFrame m = mWindow.getCurrentMatrix();
 
-		//addTablePane(mTempPath);
+    List<String> ids = m.columnAsText(c);
 
-		mWindow.openFile(mTempPath).noHeader().open();
-		
-		//MainMatCalc.openPath(mTablePath, true, 2, "Heat Map", "plot");
-	}
+    // Make ids unique
+    ids = CollectionUtils.uniquePreserveOrder(ids);
+
+    Path mTempPath = Temp.generateTempFile("txt");
+    Path mTablePath = Temp.generateTempFile("txt");
+
+    Set<GeneSet> collections = dialog.getCollections();
+
+    double maxFdr = dialog.getFdr();
+
+    Pathway.analysis(ids, collections, mHumanRefSeqConversion, mHumanEnsemblConversion, maxFdr, mTempPath, mTablePath);
+
+    // addTablePane(mTempPath);
+
+    mWindow.openFile(mTempPath).noHeader().open();
+
+    // MainMatCalc.openPath(mTablePath, true, 2, "Heat Map", "plot");
+  }
 }

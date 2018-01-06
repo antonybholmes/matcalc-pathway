@@ -30,134 +30,128 @@ import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
-
 public class PathwayDialog extends ModernDialogHelpWindow {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private Map<String, Path> mPathwayPathMap = new TreeMap<String, Path>();
+  private Map<String, Path> mPathwayPathMap = new TreeMap<String, Path>();
 
-	private Map<String, ModernCheckBox> mPathwayMap = 
-			new TreeMap<String, ModernCheckBox>();
+  private Map<String, ModernCheckBox> mPathwayMap = new TreeMap<String, ModernCheckBox>();
 
-	/**
-	 * The member field fdr.
-	 */
-	private ModernCompactSpinner mFieldFdr = 
-			new ModernCompactSpinner(0, 1, 0.05, 0.01);
+  /**
+   * The member field fdr.
+   */
+  private ModernCompactSpinner mFieldFdr = new ModernCompactSpinner(0, 1, 0.05, 0.01);
 
+  public PathwayDialog(ModernWindow parent) {
+    super(parent, "pathway.help.url");
 
-	public PathwayDialog(ModernWindow parent) {
-		super(parent, "pathway.help.url");
+    setTitle("Pathway");
 
-		setTitle("Pathway");
+    setup();
 
-		setup();
+    createUi();
+  }
 
-		createUi();
-	}
+  private void setup() {
+    try {
+      load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
-	private void setup() {
-		try {
-			load();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+    setSize(500, 400);
 
-		setSize(500, 400);
+    UI.centerWindowToScreen(this);
+  }
 
-		UI.centerWindowToScreen(this);
-	}
+  private final void createUi() {
+    ModernComponent content = new ModernComponent();
 
-	private final void createUi() {
-		ModernComponent content = new ModernComponent();
+    Box box = VBox.create();
 
-		Box box = VBox.create();
+    sectionHeader("Gene Sets", box);
 
-		sectionHeader("Gene Sets", box);
+    content.setHeader(box);
 
-		content.setHeader(box);
+    box = VBox.create();
 
-		box = VBox.create();
+    for (String name : mPathwayPathMap.keySet()) {
+      ModernCheckBox c = new ModernCheckBox(name);
 
-		for (String name : mPathwayPathMap.keySet()) {
-			ModernCheckBox c = new ModernCheckBox(name);
+      box.add(c);
+      box.add(UI.createVGap(5));
 
-			box.add(c);
-			box.add(UI.createVGap(5));
+      mPathwayMap.put(name, c);
+    }
 
-			mPathwayMap.put(name, c);
-		}
+    box.setBorder(ModernWidget.BORDER);
 
-		box.setBorder(ModernWidget.BORDER);
+    ModernScrollPane scrollPane = new ModernScrollPane(box);
+    scrollPane.setVerticalScrollBarPolicy(ScrollBarPolicy.ALWAYS);
+    // UI.setSize(scrollPane, 400, 200);
 
-		ModernScrollPane scrollPane = new ModernScrollPane(box);
-		scrollPane.setVerticalScrollBarPolicy(ScrollBarPolicy.ALWAYS);
-		//UI.setSize(scrollPane, 400, 200);
+    content.setBody(scrollPane);
 
-		content.setBody(scrollPane);
+    box = VBox.create();
 
-		box = VBox.create();
+    box.add(UI.createVGap(20));
 
-		box.add(UI.createVGap(20));
+    Box box2 = HBox.create();
+    box2.add(new ModernAutoSizeLabel("Maximum FDR", 100));
+    box2.add(ModernWidget.createHGap());
+    box2.add(mFieldFdr);
+    box.add(box2);
+    content.setFooter(box);
 
-		Box box2 = HBox.create();
-		box2.add(new ModernAutoSizeLabel("Maximum FDR", 100));
-		box2.add(ModernWidget.createHGap());
-		box2.add(mFieldFdr);
-		box.add(box2);
-		content.setFooter(box);
+    setCardContent(content);
+  }
 
-		setCardContent(content);
-	}
+  private void load() throws IOException {
+    if (FileUtils.exists(PathwayModule.GENE_SETS_FOLDER)) {
+      for (Path Path : FileUtils.ls(PathwayModule.GENE_SETS_FOLDER)) {
+        if (PathUtils.getName(Path).contains("gmt.gz")) {
+          String name = GeneSetCollection.getGeneSetName(Path);
 
+          mPathwayPathMap.put(name, Path);
 
-	private void load() throws IOException {
-		if (FileUtils.exists(PathwayModule.GENE_SETS_FOLDER)) {
-			for (Path Path : FileUtils.ls(PathwayModule.GENE_SETS_FOLDER)) {
-				if (PathUtils.getName(Path).contains("gmt.gz")) {
-					String name = GeneSetCollection.getGeneSetName(Path);
+          System.err.println("pathway " + name);
+        }
+      }
+    }
+  }
 
-					mPathwayPathMap.put(name, Path);
+  @Override
+  public void clicked(ModernClickEvent e) {
+    if (e.getMessage().equals(UI.BUTTON_OK)) {
+      if (getCollections().size() == 0) {
+        ModernMessageDialog.createWarningDialog(mParent, "You must select at least one gene collection.");
 
-					System.err.println("pathway " + name);
-				}
-			}
-		}
-	}
+        return;
+      }
+    }
 
-	@Override
-	public void clicked(ModernClickEvent e) {
-		if (e.getMessage().equals(UI.BUTTON_OK)) {
-			if (getCollections().size() == 0) {
-				ModernMessageDialog.createWarningDialog(mParent, 
-						"You must select at least one gene collection.");
+    super.clicked(e);
+  }
 
-				return;
-			}
-		}
+  public Set<GeneSet> getCollections() {
+    Set<GeneSet> collections = new TreeSet<GeneSet>();
 
-		super.clicked(e);
-	}
+    for (String name : this.mPathwayMap.keySet()) {
+      if (mPathwayMap.get(name).isSelected()) {
+        try {
+          GeneSetCollection.parse(mPathwayPathMap.get(name), collections);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
 
-	public Set<GeneSet> getCollections() {
-		Set<GeneSet> collections = new TreeSet<GeneSet>();
+    return collections;
+  }
 
-		for (String name : this.mPathwayMap.keySet()) {
-			if (mPathwayMap.get(name).isSelected()) {
-				try {
-					GeneSetCollection.parse(mPathwayPathMap.get(name), collections);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return collections;
-	}
-
-	public double getFdr() throws ParseException {
-		return mFieldFdr.getValue();
-	}
+  public double getFdr() throws ParseException {
+    return mFieldFdr.getValue();
+  }
 }
