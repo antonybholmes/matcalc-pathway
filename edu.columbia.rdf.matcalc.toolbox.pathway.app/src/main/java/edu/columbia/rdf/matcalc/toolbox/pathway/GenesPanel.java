@@ -85,14 +85,12 @@ public class GenesPanel extends ModernWidget implements ModernClickListener {
   /**
    * Instantiates a new genes panel.
    *
-   * @param parent
-   *          the parent
-   * @param model
-   *          the model
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @param parent the parent
+   * @param model the model
+   * @throws IOException Signals that an I/O exception has occurred.
    */
-  public GenesPanel(ModernWindow parent, Set<GeneSetCollection> model) throws IOException {
+  public GenesPanel(ModernWindow parent, Set<GeneSetCollection> model)
+      throws IOException {
     mModel = model;
 
     setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -136,10 +134,8 @@ public class GenesPanel extends ModernWidget implements ModernClickListener {
   /**
    * Open file.
    *
-   * @param file
-   *          the file
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @param file the file
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public void openFile(File file) throws IOException {
     if (file == null) {
@@ -197,8 +193,8 @@ public class GenesPanel extends ModernWidget implements ModernClickListener {
    * (non-Javadoc)
    * 
    * @see
-   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern
-   * .event.ModernClickEvent)
+   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.
+   * modern .event.ModernClickEvent)
    */
   @Override
   public void clicked(ModernClickEvent e) {

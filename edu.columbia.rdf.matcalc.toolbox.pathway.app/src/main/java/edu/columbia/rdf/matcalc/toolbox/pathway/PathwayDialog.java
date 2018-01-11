@@ -40,7 +40,8 @@ public class PathwayDialog extends ModernDialogHelpWindow {
   /**
    * The member field fdr.
    */
-  private ModernCompactSpinner mFieldFdr = new ModernCompactSpinner(0, 1, 0.05, 0.01);
+  private ModernCompactSpinner mFieldFdr = new ModernCompactSpinner(0, 1, 0.05,
+      0.01);
 
   public PathwayDialog(ModernWindow parent) {
     super(parent, "pathway.help.url");
@@ -126,7 +127,8 @@ public class PathwayDialog extends ModernDialogHelpWindow {
   public void clicked(ModernClickEvent e) {
     if (e.getMessage().equals(UI.BUTTON_OK)) {
       if (getCollections().size() == 0) {
-        ModernMessageDialog.createWarningDialog(mParent, "You must select at least one gene collection.");
+        ModernMessageDialog.createWarningDialog(mParent,
+            "You must select at least one gene collection.");
 
         return;
       }

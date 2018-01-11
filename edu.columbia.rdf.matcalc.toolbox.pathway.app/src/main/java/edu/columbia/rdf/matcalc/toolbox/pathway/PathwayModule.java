@@ -82,7 +82,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
   private RibbonLargeButton mConvertButton = new RibbonLargeButton("Pathway",
       UIService.getInstance().loadIcon(PathwayIcon.class, 24));
 
-  public static final Path GENE_SETS_FOLDER = PathUtils.getPath("res/modules/pathway/gene_sets");
+  public static final Path GENE_SETS_FOLDER = PathUtils
+      .getPath("res/modules/pathway/gene_sets");
 
   /**
    * The member window.
@@ -106,7 +107,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
   /*
    * (non-Javadoc)
    * 
-   * @see edu.columbia.rdf.apps.matcalc.modules.Module#init(edu.columbia.rdf.apps.
+   * @see
+   * edu.columbia.rdf.apps.matcalc.modules.Module#init(edu.columbia.rdf.apps.
    * matcalc.MainMatCalcWindow)
    */
   @Override
@@ -114,7 +116,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
     mWindow = window;
 
     // home
-    mWindow.getRibbon().getHomeToolbar().getSection("Tools").add(mConvertButton);
+    mWindow.getRibbon().getHomeToolbar().getSection("Tools")
+        .add(mConvertButton);
 
     mConvertButton.addClickListener(this);
   }
@@ -123,8 +126,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
    * (non-Javadoc)
    * 
    * @see
-   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.modern
-   * .event.ModernClickEvent)
+   * org.abh.lib.ui.modern.event.ModernClickListener#clicked(org.abh.lib.ui.
+   * modern .event.ModernClickEvent)
    */
   @Override
   public final void clicked(ModernClickEvent e) {
@@ -168,13 +171,15 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
    * @throws ClassNotFoundException
    * @throws Exception
    */
-  private void analysis() throws IOException, ParseException, InvalidFormatException, SAXException,
-      ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException,
+  private void analysis() throws IOException, ParseException,
+      InvalidFormatException, SAXException, ParserConfigurationException,
+      ClassNotFoundException, InstantiationException, IllegalAccessException,
       FontFormatException, UnsupportedLookAndFeelException {
     List<Integer> columns = mWindow.getSelectedColumns();
 
     if (columns.size() == 0) {
-      ModernMessageDialog.createWarningDialog(mWindow, "You must select a column of gene ids/symbols.");
+      ModernMessageDialog.createWarningDialog(mWindow,
+          "You must select a column of gene ids/symbols.");
 
       return;
     }
@@ -192,11 +197,13 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
     // Load the gene mapping if necessary
 
     if (mHumanRefSeqConversion == null) {
-      mHumanRefSeqConversion = new IdToSymbol(Resources.getGzipReader(HUMAN_REFSEQ_FILE));
+      mHumanRefSeqConversion = new IdToSymbol(
+          Resources.getGzipReader(HUMAN_REFSEQ_FILE));
     }
 
     if (mHumanEnsemblConversion == null) {
-      mHumanEnsemblConversion = new IdToSymbol(Resources.getGzipReader(HUMAN_ENSEMBL_FILE));
+      mHumanEnsemblConversion = new IdToSymbol(
+          Resources.getGzipReader(HUMAN_ENSEMBL_FILE));
     }
 
     DataFrame m = mWindow.getCurrentMatrix();
@@ -213,7 +220,13 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
 
     double maxFdr = dialog.getFdr();
 
-    Pathway.analysis(ids, collections, mHumanRefSeqConversion, mHumanEnsemblConversion, maxFdr, mTempPath, mTablePath);
+    Pathway.analysis(ids,
+        collections,
+        mHumanRefSeqConversion,
+        mHumanEnsemblConversion,
+        maxFdr,
+        mTempPath,
+        mTablePath);
 
     // addTablePane(mTempPath);
 

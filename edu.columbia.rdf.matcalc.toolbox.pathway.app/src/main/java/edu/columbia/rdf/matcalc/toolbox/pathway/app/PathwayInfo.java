@@ -40,7 +40,8 @@ public class PathwayInfo extends GuiAppInfo {
    * Instantiates a new pathway info.
    */
   public PathwayInfo() {
-    super("Pathway", new AppVersion(2), "Copyright (C) 2014-${year} Antony Holmes",
+    super("Pathway", new AppVersion(2),
+        "Copyright (C) 2014-${year} Antony Holmes",
         UIService.getInstance().loadIcon(PathwayIcon.class, 32),
         UIService.getInstance().loadIcon(PathwayIcon.class, 128));
   }
