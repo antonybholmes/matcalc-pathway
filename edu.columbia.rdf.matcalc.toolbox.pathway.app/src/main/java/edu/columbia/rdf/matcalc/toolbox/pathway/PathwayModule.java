@@ -54,6 +54,7 @@ import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
+import edu.columbia.rdf.matcalc.OpenFile;
 import edu.columbia.rdf.matcalc.toolbox.CalcModule;
 import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
 
@@ -230,7 +231,7 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
 
     // addTablePane(mTempPath);
 
-    mWindow.openFile(mTempPath).noHeader().open();
+    new OpenFile(mWindow, mTempPath).noHeader().open();
 
     // MainMatCalc.openPath(mTablePath, true, 2, "Heat Map", "plot");
   }
