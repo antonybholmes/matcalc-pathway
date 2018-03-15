@@ -106,7 +106,7 @@ public class PathwayDialog extends ModernDialogHelpWindow {
     box.add(box2);
     content.setFooter(box);
 
-    setCardContent(content);
+    setCard(content);
   }
 
   private void load() throws IOException {
