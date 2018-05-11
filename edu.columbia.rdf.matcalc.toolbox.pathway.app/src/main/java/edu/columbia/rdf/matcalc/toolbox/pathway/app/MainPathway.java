@@ -38,7 +38,7 @@ import org.jebtk.modern.theme.ThemeService;
 import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalc;
-import edu.columbia.rdf.matcalc.BasicModuleLoader;
+import edu.columbia.rdf.matcalc.ModuleLoader;
 import edu.columbia.rdf.matcalc.bio.BioModuleLoader;
 import edu.columbia.rdf.matcalc.toolbox.pathway.PathwayModule;
 
@@ -55,7 +55,7 @@ public class MainPathway {
 
     ThemeService.getInstance().setTheme();
 
-    BasicModuleLoader ml = new BioModuleLoader().addModule(PathwayModule.class);
+    ModuleLoader ml = new BioModuleLoader().addModule(PathwayModule.class);
 
     MainMatCalc.main(new PathwayInfo(), ml);
   }
