@@ -46,7 +46,7 @@ import org.jebtk.core.collections.CollectionUtils;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.io.Temp;
 import org.jebtk.math.matrix.DataFrame;
-import org.jebtk.modern.UIService;
+import org.jebtk.modern.AssetService;
 import org.jebtk.modern.dialog.ModernMessageDialog;
 import org.jebtk.modern.event.ModernClickEvent;
 import org.jebtk.modern.event.ModernClickListener;
@@ -81,7 +81,7 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
    * The member convert button.
    */
   private RibbonLargeButton mConvertButton = new RibbonLargeButton("Pathway",
-      UIService.getInstance().loadIcon(PathwayIcon.class, 24));
+      AssetService.getInstance().loadIcon(PathwayIcon.class, 24));
 
   public static final Path GENE_SETS_FOLDER = PathUtils
       .getPath("res/modules/pathway/gene_sets");

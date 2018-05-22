@@ -28,7 +28,7 @@
 package edu.columbia.rdf.matcalc.toolbox.pathway.app;
 
 import org.jebtk.core.AppVersion;
-import org.jebtk.modern.UIService;
+import org.jebtk.modern.AssetService;
 import org.jebtk.modern.help.GuiAppInfo;
 
 /**
@@ -42,8 +42,8 @@ public class PathwayInfo extends GuiAppInfo {
   public PathwayInfo() {
     super("Pathway", new AppVersion(2),
         "Copyright (C) 2014-${year} Antony Holmes",
-        UIService.getInstance().loadIcon(PathwayIcon.class, 32),
-        UIService.getInstance().loadIcon(PathwayIcon.class, 128));
+        AssetService.getInstance().loadIcon(PathwayIcon.class, 32),
+        AssetService.getInstance().loadIcon(PathwayIcon.class, 128));
   }
 
 }
