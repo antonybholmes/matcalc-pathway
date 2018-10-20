@@ -214,8 +214,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
     // Make ids unique
     ids = CollectionUtils.uniquePreserveOrder(ids);
 
-    Path mTempPath = Temp.generateTempFile("txt");
-    Path mTablePath = Temp.generateTempFile("txt");
+    Path mTempPath = TmpService.getInstance().newTmpFile("txt");
+    Path mTablePath = TmpService.getInstance().newTmpFile("txt");
 
     Set<GeneSet> collections = dialog.getCollections();
 
