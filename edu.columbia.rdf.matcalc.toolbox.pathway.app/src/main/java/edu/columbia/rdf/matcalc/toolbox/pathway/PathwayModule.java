@@ -44,8 +44,10 @@ import org.jebtk.bioinformatics.pathway.Pathway;
 import org.jebtk.core.Resources;
 import org.jebtk.core.collections.CollectionUtils;
 import org.jebtk.core.io.PathUtils;
-import org.jebtk.core.io.Temp;
+import org.jebtk.core.io.TmpService;
+import org.jebtk.core.text.TextUtils;
 import org.jebtk.math.matrix.DataFrame;
+import org.jebtk.math.matrix.MixedWorksheetParser;
 import org.jebtk.modern.AssetService;
 import org.jebtk.modern.dialog.ModernMessageDialog;
 import org.jebtk.modern.event.ModernClickEvent;
@@ -55,6 +57,7 @@ import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.OpenFile;
+import edu.columbia.rdf.matcalc.OpenMode;
 import edu.columbia.rdf.matcalc.toolbox.CalcModule;
 import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
 
@@ -136,8 +139,6 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
       analysis();
     } catch (IOException e1) {
       e1.printStackTrace();
-    } catch (ParseException e1) {
-      e1.printStackTrace();
     } catch (InvalidFormatException e1) {
       e1.printStackTrace();
     } catch (SAXException e1) {
@@ -172,10 +173,10 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
    * @throws ClassNotFoundException
    * @throws Exception
    */
-  private void analysis() throws IOException, ParseException,
-      InvalidFormatException, SAXException, ParserConfigurationException,
-      ClassNotFoundException, InstantiationException, IllegalAccessException,
-      FontFormatException, UnsupportedLookAndFeelException {
+  private void analysis() throws IOException, InvalidFormatException,
+      SAXException, ParserConfigurationException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException, FontFormatException,
+      UnsupportedLookAndFeelException {
     List<Integer> columns = mWindow.getSelectedColumns();
 
     if (columns.size() == 0) {
@@ -214,8 +215,8 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
     // Make ids unique
     ids = CollectionUtils.uniquePreserveOrder(ids);
 
-    Path mTempPath = TmpService.getInstance().newTmpFile("txt");
-    Path mTablePath = TmpService.getInstance().newTmpFile("txt");
+    Path tempPath = TmpService.getInstance().newTmpFile("txt");
+    Path tableTempPath = TmpService.getInstance().newTmpFile("txt");
 
     Set<GeneSet> collections = dialog.getCollections();
 
@@ -226,13 +227,18 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
         mHumanRefSeqConversion,
         mHumanEnsemblConversion,
         maxFdr,
-        mTempPath,
-        mTablePath);
+        tempPath,
+        tableTempPath);
 
     // addTablePane(mTempPath);
+    
+    m = new MixedWorksheetParser(0, 0, TextUtils.TAB_DELIMITER).parse(tempPath);
+    
+    mWindow.addToHistory("Pathway", m);
 
-    new OpenFile(mWindow, mTempPath).noHeader().open();
-
+    //new OpenFile(mWindow, tempPath).headers(0).rowAnnotations(0)
+    //    .openMode(OpenMode.CURRENT_WINDOW).open();
+    
     // MainMatCalc.openPath(mTablePath, true, 2, "Heat Map", "plot");
   }
 }

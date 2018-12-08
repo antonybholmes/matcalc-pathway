@@ -2,7 +2,6 @@ package edu.columbia.rdf.matcalc.toolbox.pathway;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -153,7 +152,7 @@ public class PathwayDialog extends ModernDialogHelpWindow {
     return collections;
   }
 
-  public double getFdr() throws ParseException {
+  public double getFdr() {
     return mFieldFdr.getValue();
   }
 }
