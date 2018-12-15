@@ -9,5 +9,5 @@
 	-->
 	
 	<setting name="pathway.help.type" value="web" />
-	<setting name="pathway.help.url" value="https://bitbucket.org/lab_rdf/matcalc/wiki/Pathway" />
+	<setting name="pathway.help.url" value="https://github.com/antonybholmes/matcalc/wiki/Pathway" />
 </settings>

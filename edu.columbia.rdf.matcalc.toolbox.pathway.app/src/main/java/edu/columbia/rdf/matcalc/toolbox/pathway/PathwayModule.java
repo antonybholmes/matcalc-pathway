@@ -56,9 +56,9 @@ import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
-import edu.columbia.rdf.matcalc.OpenFile;
+import edu.columbia.rdf.matcalc.OpenFiles;
 import edu.columbia.rdf.matcalc.OpenMode;
-import edu.columbia.rdf.matcalc.toolbox.CalcModule;
+import edu.columbia.rdf.matcalc.toolbox.Module;
 import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
 
 /**
@@ -69,7 +69,7 @@ import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
  * @author Antony Holmes Holmes
  *
  */
-public class PathwayModule extends CalcModule implements ModernClickListener {
+public class PathwayModule extends Module implements ModernClickListener {
 
   /**
    * The constant HUMAN_REFSEQ_Path.
@@ -86,7 +86,7 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
   private RibbonLargeButton mConvertButton = new RibbonLargeButton("Pathway",
       AssetService.getInstance().loadIcon(PathwayIcon.class, 24));
 
-  public static final Path GENE_SETS_FOLDER = PathUtils
+  public static final Path GENE_SETS_DIR = PathUtils
       .getPath("res/modules/pathway/gene_sets");
 
   /**
@@ -234,7 +234,7 @@ public class PathwayModule extends CalcModule implements ModernClickListener {
     
     m = new MixedWorksheetParser(0, 0, TextUtils.TAB_DELIMITER).parse(tempPath);
     
-    mWindow.addToHistory("Pathway", m);
+    mWindow.history().addToHistory("Pathway", m);
 
     //new OpenFile(mWindow, tempPath).headers(0).rowAnnotations(0)
     //    .openMode(OpenMode.CURRENT_WINDOW).open();

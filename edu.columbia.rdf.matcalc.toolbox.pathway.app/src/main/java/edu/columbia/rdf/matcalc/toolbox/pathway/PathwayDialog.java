@@ -109,14 +109,16 @@ public class PathwayDialog extends ModernDialogHelpWindow {
   }
 
   private void load() throws IOException {
-    if (FileUtils.exists(PathwayModule.GENE_SETS_FOLDER)) {
-      for (Path Path : FileUtils.ls(PathwayModule.GENE_SETS_FOLDER)) {
-        if (PathUtils.getName(Path).contains("gmt.gz")) {
-          String name = GeneSetCollection.getGeneSetName(Path);
+    if (FileUtils.exists(PathwayModule.GENE_SETS_DIR)) {
+      for (Path file : FileUtils.ls(PathwayModule.GENE_SETS_DIR)) {
+        String name = PathUtils.getName(file);
+        
+        if (name.contains("gmt")) {
+          String gs = GeneSetCollection.getGeneSetName(file);
 
-          mPathwayPathMap.put(name, Path);
+          mPathwayPathMap.put(gs, file);
 
-          System.err.println("pathway " + name);
+          System.err.println("pathway " + gs);
         }
       }
     }
@@ -139,7 +141,7 @@ public class PathwayDialog extends ModernDialogHelpWindow {
   public Set<GeneSet> getCollections() {
     Set<GeneSet> collections = new TreeSet<GeneSet>();
 
-    for (String name : this.mPathwayMap.keySet()) {
+    for (String name : mPathwayMap.keySet()) {
       if (mPathwayMap.get(name).isSelected()) {
         try {
           GeneSetCollection.parse(mPathwayPathMap.get(name), collections);
