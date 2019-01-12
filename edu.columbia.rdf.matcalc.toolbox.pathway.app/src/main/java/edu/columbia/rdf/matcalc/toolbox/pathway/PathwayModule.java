@@ -31,6 +31,7 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ import org.jebtk.bioinformatics.pathway.GeneSet;
 import org.jebtk.bioinformatics.pathway.IdToSymbol;
 import org.jebtk.bioinformatics.pathway.Pathway;
 import org.jebtk.core.Resources;
-import org.jebtk.core.collections.CollectionUtils;
+import org.jebtk.core.collections.UniqueArrayList;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.io.TmpService;
 import org.jebtk.core.text.TextUtils;
@@ -56,8 +57,6 @@ import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
-import edu.columbia.rdf.matcalc.OpenFiles;
-import edu.columbia.rdf.matcalc.OpenMode;
 import edu.columbia.rdf.matcalc.toolbox.Module;
 import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
 
@@ -66,7 +65,7 @@ import edu.columbia.rdf.matcalc.toolbox.pathway.app.PathwayIcon;
  * with the same merge id will be merged together. Coordinates and copy number
  * will be adjusted but genes, cytobands etc are not.
  *
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class PathwayModule extends Module implements ModernClickListener {
@@ -210,10 +209,7 @@ public class PathwayModule extends Module implements ModernClickListener {
 
     DataFrame m = mWindow.getCurrentMatrix();
 
-    List<String> ids = m.columnAsText(c);
-
-    // Make ids unique
-    ids = CollectionUtils.uniquePreserveOrder(ids);
+    List<String> ids = new UniqueArrayList<String>(Arrays.asList(m.columnToText(c)));
 
     Path tempPath = TmpService.getInstance().newTmpFile("txt");
     Path tableTempPath = TmpService.getInstance().newTmpFile("txt");
