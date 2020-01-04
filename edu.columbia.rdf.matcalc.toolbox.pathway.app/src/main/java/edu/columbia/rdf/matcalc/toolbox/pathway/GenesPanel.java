@@ -45,6 +45,7 @@ import javax.swing.BoxLayout;
 import org.jebtk.bioinformatics.pathway.GeneSetCollection;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernCheckBox;
 import org.jebtk.modern.dialog.ModernDialogContentPanel;
@@ -54,7 +55,6 @@ import org.jebtk.modern.scrollpane.ModernScrollPane;
 import org.jebtk.modern.scrollpane.ScrollBarPolicy;
 import org.jebtk.modern.text.ModernDialogHeadingLabel;
 import org.jebtk.modern.text.ModernTextArea;
-import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 
 /**

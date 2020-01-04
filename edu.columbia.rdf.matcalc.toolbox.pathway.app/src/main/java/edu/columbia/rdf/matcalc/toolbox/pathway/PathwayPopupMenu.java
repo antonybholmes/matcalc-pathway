@@ -10,12 +10,12 @@ import java.util.Set;
 import javax.swing.Box;
 
 import org.jebtk.core.collections.CollectionUtils;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernCheckBox;
 import org.jebtk.modern.menu.ModernPopupMenu;
 import org.jebtk.modern.panel.VBox;
 import org.jebtk.modern.scrollpane.ModernScrollPane;
-import org.jebtk.modern.widget.ModernWidget;
 
 public class PathwayPopupMenu extends ModernPopupMenu {
   private static final long serialVersionUID = 1L;

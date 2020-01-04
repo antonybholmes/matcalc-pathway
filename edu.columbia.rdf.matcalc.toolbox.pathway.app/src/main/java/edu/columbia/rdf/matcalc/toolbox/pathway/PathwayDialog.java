@@ -14,6 +14,7 @@ import org.jebtk.bioinformatics.pathway.GeneSetCollection;
 import org.jebtk.core.io.FileUtils;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.modern.ModernComponent;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernCheckBox;
 import org.jebtk.modern.dialog.ModernDialogHelpWindow;
@@ -25,7 +26,6 @@ import org.jebtk.modern.scrollpane.ModernScrollPane;
 import org.jebtk.modern.scrollpane.ScrollBarPolicy;
 import org.jebtk.modern.spinner.ModernCompactSpinner;
 import org.jebtk.modern.text.ModernAutoSizeLabel;
-import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
