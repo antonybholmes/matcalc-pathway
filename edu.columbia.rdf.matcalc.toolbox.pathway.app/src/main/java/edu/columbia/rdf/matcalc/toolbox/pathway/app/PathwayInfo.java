@@ -42,7 +42,6 @@ public class PathwayInfo extends GuiAppInfo {
   public PathwayInfo() {
     super("Pathway", new AppVersion(2),
         "Copyright (C) 2014-${year} Antony Holmes",
-        AssetService.getInstance().loadIcon(PathwayIcon.class, 32),
         AssetService.getInstance().loadIcon(PathwayIcon.class, 128));
   }
 
